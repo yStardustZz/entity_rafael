@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="esportesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Atleta">
+          <Key>
+            <PropertyRef Name="IdAtleta" />
+          </Key>
+          <Property Name="IdAtleta" Type="int" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="50" />
+          <Property Name="esporte" Type="varchar" MaxLength="50" />
+          <Property Name="idade" Type="int" />
+        </EntityType>
+        <EntityType Name="Esporte">
+          <Key>
+            <PropertyRef Name="IdEsporte" />
+          </Key>
+          <Property Name="IdEsporte" Type="int" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="50" />
+          <Property Name="NumAtletas" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Esporte_Atleta">
+          <End Role="Atleta" Type="Self.Atleta" Multiplicity="1" />
+          <End Role="Esporte" Type="Self.Esporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atleta">
+              <PropertyRef Name="IdAtleta" />
+            </Principal>
+            <Dependent Role="Esporte">
+              <PropertyRef Name="NumAtletas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="esportesModelStoreContainer">
+          <EntitySet Name="Atleta" EntityType="Self.Atleta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Esporte" EntityType="Self.Esporte" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Esporte_Atleta" Association="Self.FK_Esporte_Atleta">
+            <End Role="Atleta" EntitySet="Atleta" />
+            <End Role="Esporte" EntitySet="Esporte" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="esportesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Atleta">
+          <Key>
+            <PropertyRef Name="IdAtleta" />
+          </Key>
+          <Property Name="IdAtleta" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="esporte" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idade" Type="Int32" />
+          <NavigationProperty Name="Esporte1" Relationship="Self.FK_Esporte_Atleta" FromRole="Atleta" ToRole="Esporte" />
+        </EntityType>
+        <EntityType Name="Esporte">
+          <Key>
+            <PropertyRef Name="IdEsporte" />
+          </Key>
+          <Property Name="IdEsporte" Type="Int32" Nullable="false" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NumAtletas" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Atleta" Relationship="Self.FK_Esporte_Atleta" FromRole="Esporte" ToRole="Atleta" />
+        </EntityType>
+        <Association Name="FK_Esporte_Atleta">
+          <End Role="Atleta" Type="Self.Atleta" Multiplicity="1" />
+          <End Role="Esporte" Type="Self.Esporte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Atleta">
+              <PropertyRef Name="IdAtleta" />
+            </Principal>
+            <Dependent Role="Esporte">
+              <PropertyRef Name="NumAtletas" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="esportesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Atleta" EntityType="Self.Atleta" />
+          <EntitySet Name="Esporte" EntityType="Self.Esporte" />
+          <AssociationSet Name="FK_Esporte_Atleta" Association="Self.FK_Esporte_Atleta">
+            <End Role="Atleta" EntitySet="Atleta" />
+            <End Role="Esporte" EntitySet="Esporte" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="esportesModelStoreContainer" CdmEntityContainer="esportesEntities">
+          <EntitySetMapping Name="Atleta">
+            <EntityTypeMapping TypeName="esportesModel.Atleta">
+              <MappingFragment StoreEntitySet="Atleta">
+                <ScalarProperty Name="IdAtleta" ColumnName="IdAtleta" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="esporte" ColumnName="esporte" />
+                <ScalarProperty Name="idade" ColumnName="idade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Esporte">
+            <EntityTypeMapping TypeName="esportesModel.Esporte">
+              <MappingFragment StoreEntitySet="Esporte">
+                <ScalarProperty Name="IdEsporte" ColumnName="IdEsporte" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+                <ScalarProperty Name="NumAtletas" ColumnName="NumAtletas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
